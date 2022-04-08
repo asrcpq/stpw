@@ -21,8 +21,7 @@ impl Timer {
 		let dt = SystemTime::now()
 			.duration_since(self.prev_time)
 			.unwrap()
-			.as_micros();
-		let dt = dt as f32 / 1e6;
+			.as_secs_f32();
 		self.laps.push(dt);
 		let dt_accumulate = dt + self.laps_accumulate.last().unwrap_or(&0.);
 		self.laps_accumulate.push(dt_accumulate);
@@ -31,7 +30,7 @@ impl Timer {
 	}
 
 	pub fn sleep(&self, t: f32) {
-		std::thread::sleep(std::time::Duration::from_micros((t * 1e6) as u64));
+		std::thread::sleep(std::time::Duration::from_secs_f32(t));
 	}
 
 	pub fn get_laps(&self) -> Vec<f32> {
